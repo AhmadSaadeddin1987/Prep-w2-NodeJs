@@ -21,7 +21,7 @@ res.send('ok');
 });
 
 // 2. Update blog
-app.put('/posts/:title', (req, res) => {
+app.put('/blogs/:title', (req, res) => {
 const title = req.params.title;
 const { content } = req.body;
 
@@ -29,12 +29,13 @@ if (!content) {
 return res.status(400).send('Content is required!');
 }
 
-if (fs.existsSync(title)) {
+if (!fs.existsSync(title)) {
+return res.status(404).send('This post does not exist!');
+}
+
 fs.writeFileSync(title, content);
 res.send('ok');
-} else {
-res.status(404).send('This post does not exist!');
-}
+
 });
 
 // 3. Delete blog
